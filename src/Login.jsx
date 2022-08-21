@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 
 let Login = () => {
-   var [email, setEmail] = useState("takla@yahoo.com");
-   var [password, setPassword] = useState("Admin123#");
+   var [email, setEmail] = useState("");
+   var [password, setPassword] = useState("");
 
     return (
         <div className="row">
