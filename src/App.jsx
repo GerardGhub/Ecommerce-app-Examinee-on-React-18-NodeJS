@@ -5,11 +5,14 @@ import NoMatchPage from "./NoMatchPage";
 import Dashboard from "./Dashboard";
 import { HashRouter, Routes } from "react-router-dom";
 import { Route } from "react-router";
+import NavBar from "./NavBar";
+
 
 function App() {
     return (
         <HashRouter>
             <div className="container-fluid">
+                <NavBar/>
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
