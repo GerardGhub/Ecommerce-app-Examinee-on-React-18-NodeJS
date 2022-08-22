@@ -1,10 +1,16 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserContext } from "./UserContext";
 
 function Dashboard(props) {
 
+    //get context
+    let userContext = useContext(UserContext);
     //    executes only once - on initial render = componentdidmount
     useEffect(() => {
-        document.title ="Dashboard - eCommerce";
+        document.title = "Dashboard - eCommerce";
+
+
+        console.log(useContext);
     }, []);
 
     return (
