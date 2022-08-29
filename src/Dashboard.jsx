@@ -1,7 +1,7 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { UserContext } from "./UserContext";
 import Order from "./Order";
-import {OrdersService, ProductsService} from "./Service";
+import { OrdersService, ProductsService } from "./Service";
 
 
 
@@ -10,45 +10,40 @@ function Dashboard(props) {
 
     //get context
     let userContext = useContext(UserContext);
-    // console.log(useContext);
+
+    let loadDataFromDatabase = useCallback(async () => {
+        let ordersResponse = await fetch(`http://localhost:5000/orders?userid=${userContext.user.currentUserId}`,
+            { method: "GET" }
+        );
+        if (ordersResponse.ok) {
+            //if status 200
+            let ordersResponseBody = await ordersResponse.json();
+
+            //get all data from products
+            let productResponse = await ProductsService.fetchProducts();
+            if (productResponse.ok) {
+                let productsResponseBody = await productResponse.json();
+
+                //read all orders data
+                ordersResponseBody.forEach((order) => {
+                    order.product = ProductsService.getProductByProductId(
+                        productsResponseBody, order.productId
+                    );
+                });
+
+                console.log(ordersResponseBody);
+                setOrders(ordersResponseBody);
+            }
+        }
+
+    }, [userContext.user.currentUserId]);
 
     // executes only once - on initial render = componentdidmount
     useEffect(() => {
         document.title = "Dashboard - eCommerce";
 
-        //load data from database
-        (async () => {
-            let ordersResponse = await fetch(`http://localhost:5000/orders?userid=${userContext.user.currentUserId}`,
-                { method: "GET" }
-            );
-            if (ordersResponse.ok) {
-                //if status 200
-                let ordersResponseBody = await ordersResponse.json();
-
-                //get all data from products
-                let productResponse = await ProductsService.fetchProducts();
-                if (productResponse.ok) {
-                    let productsResponseBody = await productResponse.json();
-
-                    //read all orders data
-                    ordersResponseBody.forEach((order) => {
-                        order.product = ProductsService.getProductByProductId(
-                            productsResponseBody, order.productId
-                        );
-                    });
-
-                console.log(ordersResponseBody);
-                    setOrders(ordersResponseBody);
-                }
-
-
-
-            }
-
-        })(
-
-        );
-    }, [userContext.user.currentUserId]);
+        loadDataFromDatabase();
+    }, [userContext.user.currentUserId, loadDataFromDatabase]);
 
 
 
@@ -56,7 +51,10 @@ function Dashboard(props) {
         <div className='row'>
             <div className="col-12 py-3 header">
                 <h4>
-                    <i className="fa fa-dashboard"></i>Dashboard</h4>
+                    <i className="fa fa-dashboard"></i>Dashboard {""}
+                    <button className="btn btn-sm btn-info"><i className="fa fa-refresh"
+                    onClick={loadDataFromDatabase}></i> Refresh</button>
+                </h4>
             </div>
 
 
