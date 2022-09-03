@@ -14,7 +14,7 @@ let NavBar = (props) => {
             currentUserName: null,
             currentUserId: null
         });
-       
+
         window.location.hash = "/";
     };
 
@@ -34,6 +34,16 @@ let NavBar = (props) => {
                                 to="/dashboard"
                                 activeclassname="active">
                                 <i className='fa fa-dashboard'></i> Dashboard
+                            </NavLink>
+                        </li>) : ("")}
+
+
+                        {userContext.user.isLoggedIn ? (
+                        <li className="nav-item">
+                            <NavLink className="nav-link"
+                                to="/store"
+                                activeclassname="active">
+                                <i className='fa fa-shopping-bag'></i> Store
                             </NavLink>
                         </li>) : ("")}
 

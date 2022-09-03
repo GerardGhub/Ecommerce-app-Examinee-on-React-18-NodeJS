@@ -7,7 +7,7 @@ import { HashRouter, Routes } from "react-router-dom";
 import { Route } from "react-router";
 import NavBar from "./NavBar";
 import { UserContext } from "./UserContext";
-
+import Store from "./Store";
 
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
                         <Route path="/" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/store" element={<Store />} />
                         <Route path="*" element={<NoMatchPage />} />
                     </Routes>
                 </div>
