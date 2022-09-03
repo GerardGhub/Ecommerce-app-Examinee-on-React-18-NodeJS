@@ -16,19 +16,24 @@ function Product(props) {
 
                     <div>
                         {[...Array(prod.rating).keys()].map((n) => {
-                            return <i className="fa fa-star text-warning" key={n}></i>
+                            return <i className="fa fa-star text-warning" key={n}></i>;
                         })}
                         {[...Array(5 - prod.rating).keys()].map((n) => {
-                            return <i className="fa fa-star-o text-warning" key={n}></i>
+                            return <i className="fa fa-star-o text-warning" key={n}></i>;
                         })}
                     </div>
 
                     <div className="float-right">
                         {prod.isOrdered ? (
-                           <span className="text-primary">Added to Cart!</span> 
+                            <span className="text-primary">Added to Cart!</span>
                         ) : (
-                            <button className="btn btn-sm btn-primary">
-                                <i className="fa fa-cart-plus"></i> Add to Heart
+                            <button
+                                className="btn btn-sm btn-primary"
+                                onClick={() => {
+                                    props.onAddToCartClick(prod);
+                                }}
+                            >
+                                <i className="fa fa-cart-plus"></i> Add to Cart
                             </button>
                         )}
                     </div>

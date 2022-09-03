@@ -9,6 +9,10 @@ function Store(props) {
     let [brands, setBrands] = useState([]);
     let [categories, setCategories] = useState([]);
     let [products, setProducts] = useState([]);
+    let [productsToShow, setProductsToShow] = useState([]);
+    let [search, setSearch] = useState("");
+
+
     //get User Context
     let userContext = useContext(UserContext);
     useEffect(() => {
@@ -42,12 +46,16 @@ function Store(props) {
                     product.brand = BrandsService.getBrandByBrandId(brandsResponseBody, product.brandId);
 
                     //set category
-                    product.category = CategoriesService.getCategoryByCategoryId(categoriesResponseBody, product.categoryId);
+                    product.category = CategoriesService.getCategoryByCategoryId(
+                        categoriesResponseBody,
+                        product.categoryId
+                        );
                     product.isOrdered = false;
 
                 });
 
                 setProducts(productsResponseBody);
+                setProductsToShow(productsResponseBody);
                 document.title = "Store - eCommmerce"
             }
 
@@ -62,6 +70,7 @@ function Store(props) {
         });
 
         setBrands(brandsData);
+        updateProductsToShow();
     };
 
     //UpdateCategoryIsChecked
@@ -72,20 +81,58 @@ function Store(props) {
         });
 
         setCategories(categoryData);
+        updateProductsToShow();
     };
 
-    //When Users Click the Add to Cart
-    let onAddToCartClick = (prod) => {
+    //update products to show
+    let updateProductsToShow = () => {
+        setProductsToShow(products.filter((prod) => {
+            return (
+                categories.filter(
+                 (category) =>
+                    category.id === prod.categoryId && category.isChecked
+                    ).length > 0
+            );
+        })
+            .filter(prod => {
+                return (
+                    brands.filter(
+                    (brand) => brand.id === prod.brandId && brand.isChecked).length > 0
+                );
+            })
+        );
+    };
 
+    //When the user clicks on Add to Cart function
+    let onAddToCartClick = (prod) => {
         (async () => {
             let newOrder = {
-                userId: userContext.user.userId,
+                userId: userContext.user.currentUserId,
                 productId: prod.id,
                 quantity: 1,
                 isPaymentCompleted: false,
             };
-        })();
 
+            let orderResponse = await fetch(`http://localhost:5000/orders`, {
+                method: "POST",
+                body: JSON.stringify(newOrder),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (orderResponse.ok) {
+                //isOrdered = true
+                let prods = products.map((p) => {
+                    if (p.id === prod.id) p.isOrdered = true;
+                    return p;
+                });
+
+                setProducts(prods);
+                updateProductsToShow();
+
+            } else {
+                console.log(orderResponse);
+            }
+        })();
     };
 
 
@@ -154,8 +201,10 @@ function Store(props) {
                 </div>
                 <div className="col-lg-9">
                     <div className="row">
-                        {products.map((prod) => (
-                            <Product key={prod.id} product={prod} />
+                        {productsToShow.map((prod) => (
+                            <Product key={prod.id}
+                                product={prod}
+                                onAddToCartClick={onAddToCartClick} />
                         ))}
                     </div>
 
