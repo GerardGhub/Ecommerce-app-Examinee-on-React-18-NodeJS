@@ -40,6 +40,7 @@ function Store(props) {
                 `http://localhost:5000/products?productName_like=${search}`,
                 { method: "GET"}
             );
+            
             let productsResponseBody = await productsResponse.json();
 
             if (productsResponse.ok) {
