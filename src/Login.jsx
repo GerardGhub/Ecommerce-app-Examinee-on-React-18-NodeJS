@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 let Login = (props) => {
-    var [email, setEmail] = useState("scott@test.com");
-    var [password, setPassword] = useState("Scott123");
+    var [email, setEmail] = useState("admin@gmail.com");
+    var [password, setPassword] = useState("Admin123");
     let userContext = useContext(UserContext);
 
 
@@ -120,9 +120,18 @@ let Login = (props) => {
                         isLoggedIn: true,
                         currentUserName: responseBody[0].fullName,
                         currentUserId: responseBody[0].id,
+                        currentUserRole: responseBody[0].role,
                     });
 
-                    navigate("/dashboard");
+                    if (responseBody[0].role === "user")
+                    {
+                        navigate("/dashboard");
+                    }
+                    else
+                    {
+                        navigate("/products");
+                    }
+
 
                 } else {
                     setLoginMessage(

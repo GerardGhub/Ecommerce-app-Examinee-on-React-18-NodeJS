@@ -36,7 +36,10 @@ function Store(props) {
             setCategories(categoriesResponseBody);
 
             //get products from db
-            let productsResponse = await ProductsService.fetchProducts();
+            let productsResponse = await fetch(
+                `http://localhost:5000/products?productName_like=${search}`,
+                { method: "GET"}
+            );
             let productsResponseBody = await productsResponse.json();
 
             if (productsResponse.ok) {
@@ -49,7 +52,7 @@ function Store(props) {
                     product.category = CategoriesService.getCategoryByCategoryId(
                         categoriesResponseBody,
                         product.categoryId
-                        );
+                    );
                     product.isOrdered = false;
 
                 });
@@ -60,7 +63,7 @@ function Store(props) {
             }
 
         })();
-    }, []);
+    }, [search]);
 
     //UpdateBrandIsChecked
     let UpdateBrandIsChecked = (id) => {
@@ -89,15 +92,15 @@ function Store(props) {
         setProductsToShow(products.filter((prod) => {
             return (
                 categories.filter(
-                 (category) =>
-                    category.id === prod.categoryId && category.isChecked
-                    ).length > 0
+                    (category) =>
+                        category.id === prod.categoryId && category.isChecked
+                ).length > 0
             );
         })
             .filter(prod => {
                 return (
                     brands.filter(
-                    (brand) => brand.id === prod.brandId && brand.isChecked).length > 0
+                        (brand) => brand.id === prod.brandId && brand.isChecked).length > 0
                 );
             })
         );
@@ -142,9 +145,26 @@ function Store(props) {
                 <div className="col-lg-3">
                     <h4>
                         <i className="fa fa-shopping-bag"></i>
-                        Store
+                        Store{" "}
+                        <span className="badge badge-secondary">
+                            {productsToShow.length}
+                        </span>
                     </h4>
                 </div>
+
+                <div className="col-lg-9">
+                    <input
+                        type="search"
+                        value={search}
+                        placeholder="Search"
+                        className="form-control"
+                        autoFocus="autofucs"
+                        onChange={(event) => {
+                            setSearch(event.target.value);
+                        }}
+                    />
+                </div>
+
             </div>
 
 

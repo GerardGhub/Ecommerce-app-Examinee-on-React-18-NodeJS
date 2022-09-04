@@ -12,7 +12,8 @@ let NavBar = (props) => {
         userContext.setUser({
             isLoggedIn: false,
             currentUserName: null,
-            currentUserId: null
+            currentUserId: null,
+            currentUserRole: null,
         });
 
         window.location.hash = "/";
@@ -28,7 +29,7 @@ let NavBar = (props) => {
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
-                    {userContext.user.isLoggedIn ? (
+                    {userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
                         <li className="nav-item">
                             <NavLink className="nav-link"
                                 to="/dashboard"
@@ -38,7 +39,7 @@ let NavBar = (props) => {
                         </li>) : ("")}
 
 
-                        {userContext.user.isLoggedIn ? (
+                        {userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
                         <li className="nav-item">
                             <NavLink className="nav-link"
                                 to="/store"
@@ -48,7 +49,19 @@ let NavBar = (props) => {
                         </li>) : ("")}
 
 
-                    {!userContext.user.isLoggedIn ? (
+                        
+
+                        {userContext.user.isLoggedIn && userContext.user.currentUserRole === "admin" ? (
+                        <li className="nav-item">
+                            <NavLink className="nav-link"
+                                to="/products"
+                                activeclassname="active">
+                                <i className='fa fa-suitcase'></i> Products
+                            </NavLink>
+                        </li>) : ("")}
+
+
+                    {!userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
                         <li>
                             <NavLink className="nav-link"
                                 to="/"
