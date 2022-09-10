@@ -20,10 +20,10 @@ function App() {
     });
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{ user, setUser }}>
             <HashRouter>
+            <NavBar />
                 <div className="container-fluid">
-                    <NavBar />
                     <Routes>
                         <Route path="/" element={<Login />} />
                         <Route path="/register" element={<Register />} />

@@ -163,7 +163,7 @@ let Login = (props) => {
                     <div className="card-header border-bottom border-success">
                         <h4
                             style={{ fontSize: "40px" }}
-                            className="text-success text-center"
+                            className="text-primary text-center"
                         >
                             Login
                         </h4>
@@ -225,7 +225,7 @@ let Login = (props) => {
 
                     <div className="card-footer text-center">
                         <div className="m-1">{loginMessage}</div>
-                        <button className="btn btn-success m-2" onClick={onLoginClick}>
+                        <button className="btn btn-primary m-2" onClick={onLoginClick}>
                             Login
                         </button>
                     </div>
