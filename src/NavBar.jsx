@@ -6,6 +6,7 @@ let NavBar = (props) => {
     //get context
     let userContext = useContext(UserContext);
 
+    //When the user clicks on Logout button
     let onLogoutClick = (event) => {
         event.preventDefault();
 
@@ -21,54 +22,83 @@ let NavBar = (props) => {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-style">
-            <a className="navbar-brand" href="/#">eCommerce</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a className="navbar-brand" href="/#">
+                eCommerce
+            </a>
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
-                    {userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
+                    {userContext.user.isLoggedIn &&
+                        userContext.user.currentUserRole === "user" ? (
                         <li className="nav-item">
-                            <NavLink className="nav-link"
+                            <NavLink
+                                className="nav-link"
                                 to="/dashboard"
-                                activeclassname="active">
+                                activeclassname="active"
+                            >
                                 <i className='fa fa-dashboard'></i> Dashboard
                             </NavLink>
-                        </li>) : ("")}
+                        </li>
+                    ) : (
+                        ""
+                    )}
 
 
-                        {userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
+                    {userContext.user.isLoggedIn &&
+                        userContext.user.currentUserRole === "user" ? (
                         <li className="nav-item">
                             <NavLink className="nav-link"
                                 to="/store"
-                                activeclassname="active">
+                                activeclassname="active"
+                            >
                                 <i className='fa fa-shopping-bag'></i> Store
                             </NavLink>
-                        </li>) : ("")}
+                        </li>
+                    ) : (
+                        ""
+                    )}
 
 
-                        
 
-                        {userContext.user.isLoggedIn && userContext.user.currentUserRole === "admin" ? (
+
+                    {userContext.user.isLoggedIn &&
+                        userContext.user.currentUserRole === "admin" ? (
                         <li className="nav-item">
-                            <NavLink className="nav-link"
+                            <NavLink
+                                className="nav-link"
                                 to="/products"
-                                activeclassname="active">
+                                activeclassname="active"
+                            >
                                 <i className='fa fa-suitcase'></i> Products
                             </NavLink>
-                        </li>) : ("")}
+                        </li>
+                    ) : (
+                        ""
+                    )}
 
 
-                    {!userContext.user.isLoggedIn && userContext.user.currentUserRole === "user" ? (
+                    {!userContext.user.isLoggedIn ? (
                         <li>
-                            <NavLink className="nav-link"
+                            <NavLink
+                                className="nav-link"
                                 to="/"
                                 activeclassname="active">
                                 Login
                             </NavLink>
                         </li>
-                    ) : ("")}
+                    ) : (
+                        ""
+                    )}
 
 
                     {!userContext.user.isLoggedIn ? (
@@ -76,35 +106,40 @@ let NavBar = (props) => {
                         <li>
                             <NavLink className="nav-link"
                                 to="/register"
-                                activeclassname="active">
+                                activeclassname="active"
+                            >
                                 Register
                             </NavLink>
                         </li>
 
-                    ) : ("")}
-
+                    ) : (
+                        ""
+                    )}
                 </ul>
 
                 {/* right box start */}
                 {userContext.user.isLoggedIn ? (
-
                     <div style={{ marginRight: 100 }}>
                         <ul className='navbar-nav'>
-
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#"
+                                <a
+                                    className="nav-link dropdown-toggle"
+                                    href="#"
                                     id="navbarDropdown"
                                     role="button"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                 >
-                                    <i className='fa fa-user-circle mr-2'></i>
+                                    <i className='fa fa-user-circle mr-2'></i>{" "}
                                     {userContext.user.currentUserName}
                                 </a>
 
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item" href="/#" onClick={onLogoutClick}>
+                                    <a
+                                        className="dropdown-item"
+                                        href="/#"
+                                        onClick={onLogoutClick}>
                                         Logout
                                     </a>
                                 </div>
