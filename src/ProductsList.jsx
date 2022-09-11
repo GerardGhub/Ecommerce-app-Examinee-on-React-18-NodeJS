@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { CategoriesService, BrandsService, SortService } from './Service';
-
-
-
 
 
 function ProductsList(props) {
 
-    let [search, setSearch] = useState("");
-    let [products, setProducts] = useState([]);
-    let [originalProducts, setOriginalProducts] = useState([]);
-    let [sortBy, setSortBy] = useState("productName");
-    let [sortOrder, setSortOrder] = useState("ASC"); // ASC or DESC
+    let [search, setSearch] = useState(""); //Search bobo ka
+    let [products, setProducts] = useState([]); //represents the array of products to show in the grid
+    let [originalProducts, setOriginalProducts] = useState([]);//stores the actual array of products loaded from server
+    let [sortBy, setSortBy] = useState("productName"); // Represents name of the sort column selected by the user
+    let [sortOrder, setSortOrder] = useState("ASC"); // ASC or DESC; represents order of sorting either ascending or descending
+    let [brands, setBrands] = useState([]); //stores all brands from server
+    let [selectedBrand, setSelectedBrand] = useState("");
 
+
+    //Use Effect executes on first render only using  dependencies
     useEffect(() => {
         (async () => {
 
@@ -20,6 +21,7 @@ function ProductsList(props) {
             //Get Fucking Brands
             let brandsResponse = await BrandsService.fetchBrands();
             let brandsResponseBody = await brandsResponse.json();
+            setBrands(brandsResponseBody);
 
             //Get Fucking Categories
             let categoriesResponse = await CategoriesService.fetchCategories();
@@ -38,14 +40,17 @@ function ProductsList(props) {
 
             //set category property on each product
             productsResponseBody.forEach(product => {
-                product.category = CategoriesService.getCategoryByCategoryId
-                    (categoriesResponseBody, product.categoryId)
-
-                product.brand = BrandsService.getBrandByBrandId
-                    (brandsResponseBody, product.brandId)
+                product.brand = BrandsService.getBrandByBrandId(
+                brandsResponseBody, 
+                product.brandId
+                );
+    
+             
+                   product.category = CategoriesService.getCategoryByCategoryId(
+                    categoriesResponseBody,
+                    product.categoryId
+                   );
             });
-
-
 
             setProducts(productsResponseBody);
             setOriginalProducts(productsResponseBody);
@@ -54,15 +59,29 @@ function ProductsList(props) {
     }, [search]);
 
 
-    //sorting th
+
+    let filteredProducts = useMemo(() => {
+        console.log("filteredProducts", originalProducts, selectedBrand);
+        return originalProducts.filter(
+            (prod) => prod.brand.brandName.indexOf(selectedBrand) >= 0
+        );
+    },[originalProducts, selectedBrand]);
+
+
+    //When the user clicks on a column name to sort
     let onSortColumnNameClick = (event, columnName) => {
-        event.preventDefault();
+        event.preventDefault(); // avoid refresh
         setSortBy(columnName);
-        let negatedSortOrder = sortOrder === "ASC" ? "DESC" : "ASC";
+        let negatedSortOrder = sortOrder === "ASC" ? "DESC":"ASC";
         setSortOrder(negatedSortOrder);
-        setProducts(SortService.getSortedArray(originalProducts, columnName, negatedSortOrder));
     };
 
+    //UseEffect: Executes on each change of filteredBrands, sortBy or sortOrder
+    useEffect(() => {
+        setProducts(
+            SortService.getSortedArray(filteredProducts, sortBy, sortOrder)
+            );
+    }, [filteredProducts, sortBy, sortOrder]);
 
     //render column name
     let getColumnHeader = (columnName, displayName) => {
@@ -104,7 +123,7 @@ function ProductsList(props) {
                         </h4>
                     </div>
 
-                    <div className="col-lg-9">
+                    <div className="col-lg-6">
                         <input type="search"
                             placeholder='Search'
                             className='form-control'
@@ -114,6 +133,25 @@ function ProductsList(props) {
                                 setSearch(event.target.value);
                             }} />
                     </div>
+
+                    <div className="col-lg-3">
+                        <select
+                            className='form-control'
+                            value={selectedBrand}
+                            onChange={(event) => {
+                                setSelectedBrand(event.target.value);
+                            }}
+                        >
+                            <option value="">All Brands</option>
+                            {brands.map((brand) => (
+                            <option value={brand.brandName} key={brand.Id}>
+                                {brand.brandName}
+                            </option>
+                            ))}
+                        </select>
+                    </div>
+
+
                 </div>
             </div>
 
