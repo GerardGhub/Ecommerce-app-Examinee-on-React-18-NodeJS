@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
@@ -48,7 +48,7 @@ let Register = (props) => {
     let [message, setMessage] = useState("");
 
     let userContext = useContext(UserContext);
-
+    let myEmailRef = useRef();
     const navigate = useNavigate();
     //validate
     let validate = () => {
@@ -129,6 +129,7 @@ let Register = (props) => {
     //executes only once - on initial render =  componentDidMount
     useEffect(() => {
         document.title = "Register - eCommerce";
+        myEmailRef.current.focus();
     }, []);
 
     let onRegisterClick = async () => {
@@ -248,6 +249,7 @@ let Register = (props) => {
                                         setDirty({ ...dirty, [event.target.name]: true });
                                         validate();
                                     }}
+                                    ref={myEmailRef}
                                 />
 
                                 <div className="text-danger">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
@@ -6,6 +6,7 @@ let Login = (props) => {
     var [email, setEmail] = useState("admin@gmail.com");
     var [password, setPassword] = useState("Admin123");
     let userContext = useContext(UserContext);
+    let myEmailRef = useRef();
 
 
     let [dirty, setDirty] = useState({
@@ -39,6 +40,7 @@ let Login = (props) => {
     //executes only once - on initial render =  componentDidMount
     useEffect(() => {
         document.title = "Login - eCommerce";
+        myEmailRef.current.focus();
     }, []);
 
     //executes only once - on component unmounting phase = componentWillUnmount
@@ -192,6 +194,7 @@ let Login = (props) => {
                                     validate();
                                 }}
                                 placeholder="Email"
+                                ref={myEmailRef}
                             />
 
                             <div className="text-danger">
