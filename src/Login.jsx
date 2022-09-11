@@ -113,22 +113,27 @@ let Login = (props) => {
             if (response.ok) {
                 //Status code is 200
                 let responseBody = await response.json();
+
                 // set global state using context
                 if (responseBody.length > 0) {
-                    userContext.setUser({
-                        ...userContext.user,
-                        isLoggedIn: true,
-                        currentUserName: responseBody[0].fullName,
-                        currentUserId: responseBody[0].id,
-                        currentUserRole: responseBody[0].role,
+
+                    userContext.dispatch({ type: "somework", payload: { x: 10, y: 10 } });
+                    //Invokes reducer
+
+                    //dispacth calls reducer
+                    userContext.dispatch({
+                        type: "login",
+                        payload: {
+                            currentUserName: responseBody[0].fullName,
+                            currentUserId: responseBody[0].id,
+                            currentUserRole: responseBody[0].role,
+                        },
                     });
 
-                    if (responseBody[0].role === "user")
-                    {
+                    if (responseBody[0].role === "user") {
                         navigate("/dashboard");
                     }
-                    else
-                    {
+                    else {
                         navigate("/products");
                     }
 
