@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { NavLink } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
-let NavBar = (props) => {
+let NavBar = (props) => { //props
     //get context
     let userContext = useContext(UserContext);
 
     //When the user clicks on Logout button
     let onLogoutClick = (event) => {
         event.preventDefault();
-
 
         //dispatch call reducer
         userContext.dispatch({
@@ -32,7 +31,8 @@ let NavBar = (props) => {
                 data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false"
-                aria-label="Toggle navigation">
+                aria-label="Toggle navigation"
+                >
                 <span className="navbar-toggler-icon"></span>
             </button>
 
@@ -57,7 +57,8 @@ let NavBar = (props) => {
                     {userContext.user.isLoggedIn &&
                         userContext.user.currentUserRole === "user" ? (
                         <li className="nav-item">
-                            <NavLink className="nav-link"
+                            <NavLink 
+                            className="nav-link"
                                 to="/store"
                                 activeclassname="active"
                             >
@@ -67,9 +68,6 @@ let NavBar = (props) => {
                     ) : (
                         ""
                     )}
-
-
-
 
                     {userContext.user.isLoggedIn &&
                         userContext.user.currentUserRole === "admin" ? (
@@ -104,7 +102,8 @@ let NavBar = (props) => {
                     {!userContext.user.isLoggedIn ? (
 
                         <li>
-                            <NavLink className="nav-link"
+                            <NavLink 
+                            className="nav-link"
                                 to="/register"
                                 activeclassname="active"
                             >
@@ -139,21 +138,19 @@ let NavBar = (props) => {
                                     <a
                                         className="dropdown-item"
                                         href="/#"
-                                        onClick={onLogoutClick}>
+                                        onClick={onLogoutClick}
+                                        >
                                         Logout
                                     </a>
                                 </div>
                             </li>
-
                         </ul>
                     </div>
-
-
-                ) : ("")}
+                ) : (
+                    ""
+                    )}
 
                 {/* right box ends */}
-
-
 
             </div>
         </nav >

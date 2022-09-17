@@ -226,7 +226,7 @@ function ProductsList() {
             }}
           >
             <a
-              className="page-link bg-secondary text-white"
+              className="page-link bg-secondary text-white mr-1"
               href="/#"
               onClick={(event) => {
                 event.preventDefault();
@@ -266,7 +266,7 @@ function ProductsList() {
             }}
           >
             <a
-              className="page-link bg-secondary text-white"
+              className="page-link bg-secondary text-white ml-1"
               href="/#"
               onClick={(event) => {
                 event.preventDefault();

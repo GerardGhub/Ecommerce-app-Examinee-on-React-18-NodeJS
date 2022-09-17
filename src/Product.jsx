@@ -9,8 +9,9 @@ function Product(props) {
                     <h5>
                         <i className="fa fa-arrow-right"></i> {prod.productName}
                     </h5>
-                    <div># {prod.price.toFixed(2)}</div>
-                    <div className="mt-2 text-muted">#{prod.brand.brandName}
+                    <div>#{prod.price.toFixed(2)}</div>
+                    <div className="mt-2 text-muted">
+                        #{prod.brand.brandName}
                         #{prod.category.categoryName}
                     </div>
 
@@ -22,6 +23,7 @@ function Product(props) {
                             return <i className="fa fa-star-o text-warning" key={n}></i>;
                         })}
                     </div>
+
 
                     <div className="float-right">
                         {prod.isOrdered ? (

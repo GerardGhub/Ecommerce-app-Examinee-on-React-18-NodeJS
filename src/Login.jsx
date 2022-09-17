@@ -20,6 +20,8 @@ let Login = (props) => {
     });
 
     let [loginMessage, setLoginMessage] = useState("");
+
+    
     const navigate = useNavigate();
 
     //executes on each render (initial render & state updates)
@@ -93,6 +95,7 @@ let Login = (props) => {
         setErrors(errorsData);
     };
 
+
     useEffect(validate, [email, password]);
 
     //When the user clicks on Login button
@@ -118,7 +121,6 @@ let Login = (props) => {
 
                 // set global state using context
                 if (responseBody.length > 0) {
-
                     userContext.dispatch({ type: "somework", payload: { x: 10, y: 10 } });
                     //Invokes reducer
 
@@ -131,14 +133,16 @@ let Login = (props) => {
                             currentUserRole: responseBody[0].role,
                         },
                     });
-
+                  
+                    //redirect to relavant page based on role of the user received in the response
                     if (responseBody[0].role === "user") {
+                     //redirect to /dashboard
                         navigate("/dashboard");
                     }
                     else {
+                     //redirect to /products
                         navigate("/products");
                     }
-
 
                 } else {
                     setLoginMessage(

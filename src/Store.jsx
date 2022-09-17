@@ -15,6 +15,7 @@ function Store(props) {
 
     //get User Context
     let userContext = useContext(UserContext);
+
     useEffect(() => {
         (async () => {
             //get brands from db
@@ -23,7 +24,6 @@ function Store(props) {
             brandsResponseBody.forEach((brand) => {
                 brand.isChecked = true;
             });
-
             setBrands(brandsResponseBody);
 
             //get categories from db
@@ -32,7 +32,6 @@ function Store(props) {
             categoriesResponseBody.forEach((category) => {
                 category.isChecked = true;
             });
-
             setCategories(categoriesResponseBody);
 
             //get products from db
@@ -42,7 +41,6 @@ function Store(props) {
             );
             
             let productsResponseBody = await productsResponse.json();
-
             if (productsResponse.ok) {
                 productsResponseBody.forEach((product) => {
 
@@ -88,57 +86,58 @@ function Store(props) {
         updateProductsToShow();
     };
 
-    //update products to show
-    let updateProductsToShow = () => {
-        setProductsToShow(products.filter((prod) => {
-            return (
-                categories.filter(
-                    (category) =>
-                        category.id === prod.categoryId && category.isChecked
-                ).length > 0
-            );
+  //updateProductsToShow
+  let updateProductsToShow = () => {
+    setProductsToShow(
+      products
+        .filter((prod) => {
+          return (
+            categories.filter(
+              (category) =>
+                category.id === prod.categoryId && category.isChecked
+            ).length > 0
+          );
         })
-            .filter(prod => {
-                return (
-                    brands.filter(
-                        (brand) => brand.id === prod.brandId && brand.isChecked).length > 0
-                );
-            })
-        );
-    };
+        .filter((prod) => {
+          return (
+            brands.filter(
+              (brand) => brand.id === prod.brandId && brand.isChecked
+            ).length > 0
+          );
+        })
+    );
+  };
 
-    //When the user clicks on Add to Cart function
-    let onAddToCartClick = (prod) => {
-        (async () => {
-            let newOrder = {
-                userId: userContext.user.currentUserId,
-                productId: prod.id,
-                quantity: 1,
-                isPaymentCompleted: false,
-            };
+ //When the user clicks on Add to Cart function
+ let onAddToCartClick = (prod) => {
+    (async () => {
+      let newOrder = {
+        userId: userContext.user.currentUserId,
+        productId: prod.id,
+        quantity: 1,
+        isPaymentCompleted: false,
+      };
 
-            let orderResponse = await fetch(`http://localhost:5000/orders`, {
-                method: "POST",
-                body: JSON.stringify(newOrder),
-                headers: { "Content-Type": "application/json" },
-            });
+      let orderResponse = await fetch(`http://localhost:5000/orders`, {
+        method: "POST",
+        body: JSON.stringify(newOrder),
+        headers: { "Content-Type": "application/json" },
+      });
 
-            if (orderResponse.ok) {
-                //isOrdered = true
-                let prods = products.map((p) => {
-                    if (p.id === prod.id) p.isOrdered = true;
-                    return p;
-                });
+      if (orderResponse.ok) {
+        //isOrdered = true
+        let prods = products.map((p) => {
+          if (p.id === prod.id) p.isOrdered = true;
+          return p;
+        });
 
-                setProducts(prods);
-                updateProductsToShow();
-
-            } else {
-                console.log(orderResponse);
-            }
-        })();
-    };
-
+        setProducts(prods);
+        updateProductsToShow();
+      } else {
+        console.log(orderResponse);
+      }
+    })();
+  };
 
     return (
         <div>

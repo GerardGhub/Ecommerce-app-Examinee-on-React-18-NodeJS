@@ -51,11 +51,11 @@ function App() {
                 <NavBar />
                 <div className="container-fluid">
                     <Routes>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/store" element={<Store />} />
-                        <Route path="/products" element={<ProductsList />} />
+                        <Route path="/" element={<Login/>} />
+                        <Route path="/register" element={<Register/>} />
+                        <Route path="/dashboard" element={<Dashboard/>} />
+                        <Route path="/store" element={<Store/>} />
+                        <Route path="/products" element={<ProductsList/>} />
                         <Route path="*" element={<NoMatchPage />} />
                     </Routes>
                 </div>
